@@ -89,19 +89,20 @@ module.exports = {
       })
   },
   login: (req, res) => {
-    const email = req.body.email
+    const phone_number = req.body.phone_number
     const password = req.body.password
-    console.log(email)
     console.log(password)
-    userModels.getByEmail(email)
+    userModels.getByPhone(phone_number)
       .then((result) => {
         const dataUser = result[0]
         const usePassword = MiscHelper.setPassword(password, dataUser.salt).passwordHash
-        if (usePassword === dataUser.password) {
+        if (dataUser.is_verified === 0){
+          return MiscHelper.response(res, null, 403, 'User not verified')
+        }else if (usePassword === dataUser.password) {
           dataUser.token = jwt.sign({
-            userid: dataUser.id_user
+            userid: dataUser.id
           }, process.env.SECRET_KEY, { expiresIn: '1h' })
-          if (dataUser.role_id === 1) {
+          if (dataUser.role_id === "1") {
             console.log(dataUser.role_id)
             dataUser.token += ` ${crypto.createHmac('sha1', process.env.AUTH_ADMIN).digest('hex')}`
           }
@@ -159,23 +160,46 @@ module.exports = {
         console.log(error)
       })
   },
+  otp: (req, res)=>{
+    const phone_number = req.body.phone_number;
+    const data ={
+      is_verified: true
+    }
+    userModels.otp(phone_number,data)
+      .then((resultUser) => {
+        const result = resultUser;
+        MiscHelper.response(res, result, 200)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  },
   register:(req, res)=>{
     const salt = MiscHelper.generateSalt(18);
     const passwordHash = MiscHelper.setPassword(req.body.password, salt)
-    const {email, first_name, last_name, phone, contry_code} = req.body
+    const {email, first_name, last_name, phone_number, country_code} = req.body
     const data ={
       email,
       first_name,
       last_name,
-      phone,
-      contry_code,
+      phone_number,
+      country_code,
+      is_verified: false,
       password: passwordHash.passwordHash,
       salt: passwordHash.salt,
       token:"",
+      mother_name:"",
+      gender:"",
+      ktp_id:"",
+      is_talent:1,
+      status:"active",
+      birthday: new Date(2001-01-01),
+      modified_by: 0,
+      created_by:0,
       created_at: new Date(),
-      updated_at: new Date(),
+      modified_at: new Date(),
     }
-    console.log(data)
+    console.log(data);
     userModels.register(data)
     .then((resultUser)=>{
       const result = resultUser;

@@ -1,9 +1,9 @@
 require('dotenv').config()
 const connection = require('../configs/db')
 module.exports = {
-  getAngket: () => {
+  getOrder: () => {
     return new Promise((resolve, reject) => {
-      connection.query("SELECT * FROM angket_talent ", (err, result) => {
+      connection.query("SELECT * FROM order ", (err, result) => {
         if (!err) {
           resolve(result)
         } else {
@@ -12,9 +12,9 @@ module.exports = {
       })
     })
   },
-  insertAngketTalent: (data) => {
+  insertOrder: (data) => {
     return new Promise((resolve, reject) => {
-      connection.query("INSERT INTO angket_talent SET ?", data, (err, result) => {
+      connection.query("INSERT INTO order SET ?", data, (err, result) => {
         if (!err) {
           resolve(result)
         } else {
@@ -23,9 +23,9 @@ module.exports = {
       })
     })
   },
-  insertAngketCostumer: (data) => {
+  deleteOrder: (order_id) => {
     return new Promise((resolve, reject) => {
-      connection.query("INSERT INTO angket_costumer SET ?", data, (err, result) => {
+      connection.query("DELETE FROM order WHERE id = ?", order_id, (err, result) => {
         if (!err) {
           resolve(result)
         } else {
@@ -34,20 +34,9 @@ module.exports = {
       })
     })
   },
-  deleteAngket: (id_angket) => {
+  updateOrder: (order_id, data) => {
     return new Promise((resolve, reject) => {
-      connection.query("DELETE FROM angket WHERE id_angket = ?", id_angket, (err, result) => {
-        if (!err) {
-          resolve(result)
-        } else {
-          reject(new Error(err))
-        }
-      })
-    })
-  },
-  updateAngket: (id_angket, data) => {
-    return new Promise((resolve, reject) => {
-      connection.query("UPDATE angket SET ? WHERE id_angket = ?", [data, id_angket], (err, result) => {
+      connection.query("UPDATE order SET ? WHERE id = ?", [data, order_id], (err, result) => {
         if (!err) {
           resolve(result)
         } else {

@@ -5,7 +5,7 @@ const Auth = require('../helpers/auth');
 
 Route
       .all('/*', Auth.authInfo)
-      .get('/', Auth.accesstoken, angketController.getAngket)
+      .get('/', angketController.getAngket)
       .post('/talent', angketController.insertAngketTalent)
       .post('/costumer', angketController.insertAngketCostumer)
       .patch('/:angket_id', Auth.accesstoken, angketController.updateAngket)

@@ -15,7 +15,7 @@ module.exports = {
   },
   userDetail: (id_user) => {
     return new Promise((resolve, reject) => {
-      connection.query("SELECT users.id_user, users.email, users.fullname, users.role_id, users.created_at, users.updated_at, role.role_name FROM users INNER JOIN role ON users.role_id = role.id WHERE id_user = ?", id_user, (err, result) => {
+      connection.query("SELECT * FROM users WHERE id = ?", id_user, (err, result) => {
         if (!err) {
           resolve(result)
         } else {
@@ -57,10 +57,32 @@ module.exports = {
       })
     })
   },
+  getByPhone: (phone_number) => {
+    return new Promise((resolve, reject) => {
+      connection.query('SELECT * FROM users WHERE phone_number = ?', phone_number, (err, result) => {
+        if (!err) {
+          resolve(result)
+        } else {
+          reject(new Error(err))
+        }
+      })
+    })
+  },
   updatePassword: (id_user, data) => {
     console.log(id_user)
     return new Promise((resolve, reject) => {
       connection.query("UPDATE users SET ? WHERE id_user =?", [data, id_user], (err, result) => {
+        if (!err) {
+          resolve(result)
+        } else {
+          reject(new Error(err))
+        }
+      })
+    })
+  },
+  otp: (phone_number, data) => {
+    return new Promise((resolve, reject) => {
+      connection.query("UPDATE users SET ? WHERE phone_number =?", [data, phone_number], (err, result) => {
         if (!err) {
           resolve(result)
         } else {

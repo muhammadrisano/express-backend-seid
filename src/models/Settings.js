@@ -1,9 +1,9 @@
 require('dotenv').config()
 const connection = require('../configs/db')
 module.exports = {
-  getAngket: () => {
+  getSettings: () => {
     return new Promise((resolve, reject) => {
-      connection.query("SELECT * FROM angket_talent ", (err, result) => {
+      connection.query("SELECT * FROM general_settings ", (err, result) => {
         if (!err) {
           resolve(result)
         } else {
@@ -12,9 +12,9 @@ module.exports = {
       })
     })
   },
-  insertAngketTalent: (data) => {
+  insertSettings: (data) => {
     return new Promise((resolve, reject) => {
-      connection.query("INSERT INTO angket_talent SET ?", data, (err, result) => {
+      connection.query("INSERT INTO general_settings SET ?", data, (err, result) => {
         if (!err) {
           resolve(result)
         } else {
@@ -23,9 +23,9 @@ module.exports = {
       })
     })
   },
-  insertAngketCostumer: (data) => {
+  deleteSettings: (settings_id) => {
     return new Promise((resolve, reject) => {
-      connection.query("INSERT INTO angket_costumer SET ?", data, (err, result) => {
+      connection.query("DELETE FROM general_settings WHERE id = ?", settings_id, (err, result) => {
         if (!err) {
           resolve(result)
         } else {
@@ -34,20 +34,9 @@ module.exports = {
       })
     })
   },
-  deleteAngket: (id_angket) => {
+  updateSettings: (settings_id, data) => {
     return new Promise((resolve, reject) => {
-      connection.query("DELETE FROM angket WHERE id_angket = ?", id_angket, (err, result) => {
-        if (!err) {
-          resolve(result)
-        } else {
-          reject(new Error(err))
-        }
-      })
-    })
-  },
-  updateAngket: (id_angket, data) => {
-    return new Promise((resolve, reject) => {
-      connection.query("UPDATE angket SET ? WHERE id_angket = ?", [data, id_angket], (err, result) => {
+      connection.query("UPDATE general_settings SET ? WHERE id = ?", [data, settings_id], (err, result) => {
         if (!err) {
           resolve(result)
         } else {

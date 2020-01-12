@@ -13,7 +13,7 @@ module.exports = {
       })
   },
   insertAngketTalent: (req, res) => {
-    const {name, phone, medsos, usermedsos, tgl_lahir, school, how_seid, where_seid, bidang1, bidang2, minat_volunteer, volunteer} = req.body
+    const {name, phone, medsos, usermedsos, tgl_lahir, school, bidang1, bidang2, minat_volunteer, volunteer} = req.body
     const data = {
       name,
       phone,
@@ -21,8 +21,6 @@ module.exports = {
       usermedsos,
       tgl_lahir,
       school,
-      how_seid,
-      where_seid,
       bidang1,
       bidang2,
       minat_volunteer,
@@ -39,15 +37,14 @@ module.exports = {
       })
   },
   insertAngketCostumer: (req, res) => {
-    const { name, email, phone, institusi, what_seid, where_seid, butuh_talent, with_relawan, bidang_butuh1, bidang_butuh2, bidang_butuh3 } = req.body
+    console.log(req.body)
+    const { name, email, phone, institusi, butuh_relawan, with_relawan, bidang_butuh1, bidang_butuh2, bidang_butuh3 } = req.body
     const data = {
       name,
       email,
       phone,
       institusi,
-      what_seid,
-      where_seid,
-      butuh_talent,
+      butuh_relawan,
       with_relawan,
       bidang_butuh1,
       bidang_butuh2,

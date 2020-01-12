@@ -14,7 +14,6 @@ Route
   .post('/insert', Auth.accesstoken, Auth.authadmin, userController.insertUser)
   .post('/register', userController.register)
   .post('/login', userController.login)
-  .post('/otp', userController.otp)
   .delete('/:id_user', Auth.accesstoken, Auth.authadmin, userController.deleteUser)
 
 module.exports = Route;

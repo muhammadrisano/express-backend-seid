@@ -19,10 +19,10 @@ module.exports = {
         authadmin = bearerToken[2]
       }
 
-
+      console.log(token)
       req.token = token
       req.authadmin = authadmin
-      console.log('Token stored ! ' + token)
+      // console.log('Token stored ! ' + token)
       next()
     }
   },
@@ -30,7 +30,6 @@ module.exports = {
     const secretKey = process.env.SECRET_KEY
     const accessToken = req.token
     const userToken = req.headers['x-control-user']
-    console.log(accessToken);
     jwt.verify(accessToken, secretKey, (err, decoded) => {
       console.log(userToken);
       if (err && err.name === 'TokenExpiredError') return MiscHelper.response(res, null, 401, 'Token Expired')
